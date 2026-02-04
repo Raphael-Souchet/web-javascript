@@ -1,26 +1,12 @@
-let numJour = "04";
-let isHiver = true;
+let nbr1 = 3;
+let nbr2 = 7;
+let nbr3 = 8;
+let nbr4 = 21;
 
-let tabJours = ["Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi","Dimanche"]; 
-let tabMois = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Aout", "Septembre", "Octobre", "Novembre", "Decembre"]; 
-
-let maDateV1 = {
-    "jour" : tabJours[2],
-    "mois" : tabMois[0]
-}
-
-let maDateV2 = {};
-maDateV2.jour = tabJours[2];
-maDateV2.mois = tabMois[0];
-
-
-console.log();
-if (isHiver) {
-    console.log(`Nous sommes le ${tabJours[2]} ${numJour} ${tabMois[0]} et nous sommes en hiver`);
-}
-else {
-    console.log(`Nous sommes le ${tabJours[2]} ${numJour} ${tabMois[0]} et nous sommes en pas en hiver`);
-}
-
-console.log(maDateV1);
-console.log(maDateV2);
+console.log(nbr1+nbr2); 
+console.log(nbr4-nbr3);
+nbr2 = nbr1*nbr2;
+console.log(nbr2);
+console.log(nbr2+1);
+console.log(nbr4/nbr1);
+console.log(nbr4%nbr1);
