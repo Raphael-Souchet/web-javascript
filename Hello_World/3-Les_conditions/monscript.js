@@ -1,16 +1,21 @@
 let age = prompt("Quel age as tu ?");
+let ageEnEntier = parseInt(age, 10);
 
-if (age > 0) {
-    if (age < 18) {
-        alert(`L utilisateur a ${age}, il est mineur !`);
-    }
-    else if (age >= 62) {
-        alert(`L utilisateur a ${age}, il est majeur et retraité !`);
-    }
-    else {
-        alert(`L utilisateur a ${age}, il est majeur !`);
-    }
+switch (ageEnEntier) {
+    case 18:
+        alert(`il vient d être majeur`);
+        break;
+    case 25:
+        alert(`il a un quart de siècle`);
+        break;
+    case 50:
+        alert(`il a un demi siècle`);
+        break;
+    case 62:
+        alert(`il vient d être à la retraite`);
+        break;
+    case 100:
+        alert(`il vient d être centenaire`);
+        break;
 }
-else {
-    alert(`T'es pas né chef`);
-}
+
