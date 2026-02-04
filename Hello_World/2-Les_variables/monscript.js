@@ -1,12 +1,4 @@
-let nbr1 = 3;
-let nbr2 = 7;
-let nbr3 = 8;
-let nbr4 = 21;
+let nomSerie = prompt("Quelle est ta série préférée ?");
+let nomPerso = prompt("Quelle est ton personnage favori ?");
 
-console.log(nbr1+nbr2); 
-console.log(nbr4-nbr3);
-nbr2 = nbr1*nbr2;
-console.log(nbr2);
-console.log(nbr2+1);
-console.log(nbr4/nbr1);
-console.log(nbr4%nbr1);
+alert(`Ma série préférée est ${nomSerie} et mon personnage est ${nomPerso} !`);
