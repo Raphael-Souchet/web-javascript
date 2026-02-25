@@ -14,7 +14,7 @@ let x;
 do {
     x = parseInt(prompt("Saisir un nombre entier entre 1 et 100 :"));
     
-} while (x < 1 || x > 100);
+} while (isNaN(x) || x < 1 || x > 100);
 
 let sommeX = 0;
 i = 1;
