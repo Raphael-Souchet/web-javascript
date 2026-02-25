@@ -3,9 +3,7 @@ let li = document.querySelector("#listeCourses li");
 
 /* Tous les évènements */
 li.addEventListener('click', ()=>{
-  // Modification des propriétés CSS lors du clic
-  li.style.backgroundColor = "lightblue";
-  li.style.textDecoration = "line-through";
+  li.classList.toggle("itemCheck");
 });
 
 /* Les fonctions */
