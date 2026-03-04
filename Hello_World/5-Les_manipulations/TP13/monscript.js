@@ -4,7 +4,7 @@ let dateJourFr = dateJour.toLocaleDateString('fr-FR');
 let titreH2 = document.querySelector("h2");
 let myInput = document.querySelector("#myInput");
 let btn = document.querySelector(".btn");
-let liste = document.querySelector("#listeCourses");
+let liste = document.querySelector("#listeCourses"); 
 
 titreH2.textContent = titreH2.textContent + " : " + dateJourFr;
 
