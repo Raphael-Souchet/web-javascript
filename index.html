@@ -10,7 +10,7 @@
     <script src="./js/script.js" defer type="module"></script>
 </head>
 <body>
-<h2>Sélectionner la génération de Pokémon :</h2>
+<h2>Sélectionner la génération de Pokémon et le tri :</h2>
 <section>
     <div class="select">
         <select id="filtre">
@@ -23,31 +23,17 @@
             <option value="7">Génération 7</option>
             <option value="8">Génération 8</option>
         </select>
+        <select id="tri">
+            <option value="id" selected>Trier par ID</option>
+            <option value="nom">Trier par Nom</option>
+            <option value="hp">Trier par Points de vie</option>
+            <option value="attaque">Trier par Attaque</option>
+            <option value="type">Trier par Type</option>
+        </select>
     </div>
 </section>
-<div class="select">
-    <select id="filtre-type">
-        <option value="Tous" selected>Tous les types</option>
-        <option value="Plante">Plante</option>
-        <option value="Feu">Feu</option>
-        <option value="Eau">Eau</option>
-        <option value="Combat">Combat</option>
-        <option value="Poison">Poison</option>
-        <option value="Vol">Vol</option>
-        <option value="Insecte">Insecte</option>
-        <option value="Normal">Normal</option>
-        <option value="Électrik">Électrik</option>
-        <option value="Sol">Sol</option>
-        <option value="Fée">Fée</option>
-        <option value="Psy">Psy</option>
-        <option value="Roche">Roche</option>
-        <option value="Dragon">Dragon</option>
-        <option value="Spectre">Spectre</option>
-        <option value="Glace">Glace</option>
-        <option value="Acier">Acier</option>
-        <option value="Ténèbres">Ténèbres</option>
-    </select>
-</div>
+<section>
+    <div id="boutons-types" class="boutons"></div>
 </section>
 <main></main>
 </body>
