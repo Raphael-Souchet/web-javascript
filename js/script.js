@@ -1,3 +1,78 @@
+class Type {
+    constructor(name) {
+        this.name = name;
+        this.image = "";
+        this.color = this.getColorHexa();
+    }
+
+    getColorHexa() {
+        switch (this.name) {
+            case 'grass': return 'green';
+            case 'fire': return 'orange';
+            case 'water': return 'blue';
+            case 'fighting': return '#C77D12';
+            case 'poison': return '#B711D9';
+            case 'flying': return '#ADEEFF';
+            case 'bug': return '#62913A';
+            case 'normal': return '#E0E0E0';
+            case 'electric': return '#FFE303';
+            case 'ground': return '#A65C00';
+            case 'fairy': return '#FF66FB';
+            case 'psychic': return '#FF2974';
+            case 'rock': return '#A1AB91';
+            case 'dragon': return '#0034D1';
+            case 'ghost': return '#705898';
+            case 'ice': return '#98D8D8';
+            case 'steel': return '#B8B8D0';
+            case 'dark': return '#705848';
+            default: return 'grey';
+        }
+    }
+}
+
+class Pokemon {
+    constructor(data) {
+        this.id = data.id;
+        this.image = data.image;
+        this.name = data.name;
+        this.apiTypes = data.types.map(type => new Type(type));
+
+        this.hp = data.stats.find(s => s.name === 'hp').value;
+        this.attack = data.stats.find(s => s.name === 'attack').value;
+        this.defense = data.stats.find(s => s.name === 'defense').value;
+        this.special_attack = data.stats.find(s => s.name === 'special-attack').value;
+        this.speed = data.stats.find(s => s.name === 'speed').value;
+    }
+
+    displayCard() {
+        const article = document.createElement('article');
+        let couleur = this.apiTypes[0].color;
+
+        article.style.backgroundColor = couleur;
+        article.style.borderColor = couleur;
+
+        article.innerHTML = `
+          <figure>
+            <picture>
+              <img src="${this.image}" alt="Image de ${this.name}" />
+            </picture>
+            <figcaption>
+              <span class="types">${this.apiTypes[0].name}</span>
+              <h2>${this.name}</h2>
+              <ol>
+                <li>Points de vie : ${this.hp}</li>
+                <li>Attaque : ${this.attack}</li>
+                <li>Défense : ${this.defense}</li>
+                <li>Attaque spécial : ${this.special_attack}</li>
+                <li>Vitesse : ${this.speed}</li>
+              </ol>
+            </figcaption>
+          </figure>
+        `;
+        return article;
+    }
+}
+
 const typeMap = {
     'Plante': 'grass',
     'Feu': 'fire',
@@ -21,39 +96,16 @@ const typeMap = {
 
 let selectedTypes = [];
 
-const getCouleur = (type) => {
-    switch (type) {
-        case 'grass': return 'green';
-        case 'fire': return 'orange';
-        case 'water': return 'blue';
-        case 'fighting': return '#C77D12';
-        case 'poison': return '#B711D9';
-        case 'flying': return '#ADEEFF';
-        case 'bug': return '#62913A';
-        case 'normal': return '#E0E0E0';
-        case 'electric': return '#FFE303';
-        case 'ground': return '#A65C00';
-        case 'fairy': return '#FF66FB';
-        case 'psychic': return '#FF2974';
-        case 'rock': return '#A1AB91';
-        case 'dragon': return '#0034D1';
-        case 'ghost': return '#705898';
-        case 'ice': return '#98D8D8';
-        case 'steel': return '#B8B8D0';
-        case 'dark': return '#705848';
-        default: return 'grey';
-    }
-};
-
 async function loadData(generation, triFiltre) {
     const response = await fetch('./data/pokemon.json');
     const jsonData = await response.json();
-    const data = jsonData.pokemon;
+
+    let allPokemons = jsonData.pokemon.map(data => new Pokemon(data));
 
     const main = document.querySelector('main');
     main.innerHTML = '';
 
-    let pokemonsAafficher = data.filter(pokemon => {
+    let pokemonsAafficher = allPokemons.filter(pokemon => {
         if (generation === '1') return pokemon.id <= 151;
         if (generation === '2') return pokemon.id > 151 && pokemon.id <= 251;
         if (generation === '3') return pokemon.id > 251 && pokemon.id <= 386;
@@ -67,7 +119,9 @@ async function loadData(generation, triFiltre) {
 
     if (selectedTypes.length > 0) {
         pokemonsAafficher = pokemonsAafficher.filter(pokemon =>
-            selectedTypes.some(type => pokemon.types.includes(typeMap[type]))
+            selectedTypes.some(selectedType =>
+                pokemon.apiTypes.map(t => t.name).includes(typeMap[selectedType])
+            )
         );
     }
 
@@ -76,54 +130,19 @@ async function loadData(generation, triFiltre) {
             return a.name.localeCompare(b.name);
         }
         if (triFiltre === 'type') {
-            return a.types[0].localeCompare(b.types[0]);
+            return a.apiTypes[0].name.localeCompare(b.apiTypes[0].name);
         }
         if (triFiltre === 'hp') {
-            let hpA = a.stats.find(s => s.name === 'hp').value;
-            let hpB = b.stats.find(s => s.name === 'hp').value;
-            return hpB - hpA;
+            return b.hp - a.hp;
         }
         if (triFiltre === 'attaque') {
-            let attackA = a.stats.find(s => s.name === 'attack').value;
-            let attackB = b.stats.find(s => s.name === 'attack').value;
-            return attackB - attackA;
+            return b.attack - a.attack;
         }
         return a.id - b.id;
     });
 
     pokemonsAafficher.forEach(pokemon => {
-        const article = document.createElement('article');
-        const pokemonType = pokemon.types[0];
-        let couleur = getCouleur(pokemonType);
-
-        article.style.backgroundColor = couleur;
-        article.style.borderColor = couleur;
-
-        const getStat = (statName) => {
-            const statObj = pokemon.stats.find(s => s.name === statName);
-            return statObj ? statObj.value : 0;
-        };
-
-        article.innerHTML = `
-      <figure>
-        <picture>
-          <img src="${pokemon.image}" alt="Image de ${pokemon.name}" />
-        </picture>
-        <figcaption>
-          <span class="types">${pokemon.types[0]}</span>
-          <h2>${pokemon.name}</h2>
-          <ol>
-            <li>Points de vie : ${getStat('hp')}</li>
-            <li>Attaque : ${getStat('attack')}</li>
-            <li>Défense : ${getStat('defense')}</li>
-            <li>Attaque spécial : ${getStat('special-attack')}</li>
-            <li>Vitesse : ${getStat('speed')}</li>
-          </ol>
-        </figcaption>
-      </figure>
-    `;
-
-        main.appendChild(article);
+        main.appendChild(pokemon.displayCard());
     });
 }
 
@@ -142,7 +161,8 @@ Object.keys(typeMap).forEach(typeName => {
             btn.style.backgroundColor = 'grey';
         } else {
             selectedTypes.push(typeName);
-            btn.style.backgroundColor = getCouleur(typeMap[typeName]);
+            let temporaryType = new Type(typeMap[typeName]);
+            btn.style.backgroundColor = temporaryType.color;
         }
         loadData(selectGeneration.value, selectTri.value);
     });
